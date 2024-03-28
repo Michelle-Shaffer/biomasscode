@@ -1,0 +1,38 @@
+### ARCSPP for IRL ###
+
+# archosargus spp., but used archosargus probatocephalus
+#Lengths already binned in IRL length weights file
+
+##Calculate weights:
+
+#When choosing l/w parameters on FishBase, choose closest geographical study
+
+#If something wrong with closest study (low replicates, etc.) then can use another in similar geographic region
+
+#Convert SL into cm and then TL and then FL used by GoM study:
+
+table$cm <- table$AvgLength/10 #if FIM data is in cm already take this out
+
+table$TL <- (table$cm*1.256) #add this info to summary table
+
+table$FL <- (table$TL*0.839) #add this info to summary table
+
+#in above line of code b=1.126 and 0.839 respectively
+
+#change out a and b values depending on the species and length type conversion being done
+
+table
+
+#Use FL in cm to calculate weights on FishBase:
+
+#Use equation on FishBase to determine weights
+
+table$AvgWeight <- 0.0188*(table$FL^3.091)
+
+#in above equation a=0.0188 and b=3.091, change out a and b values depending on species and study
+
+#Calculate total weights:
+
+table$TotalWeight <- table$AvgWeight*table$NumOfTotal
+
+weight <- sum(table$TotalWeight, na.rm=TRUE)
